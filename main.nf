@@ -9,7 +9,7 @@ process sayHello {
     """
     echo '$x world!'
     for i in {1..60}; do
-        echo "Waiting... $i/60"
+        echo "Waiting... \$i/60"
         sleep 5
     done
     """
