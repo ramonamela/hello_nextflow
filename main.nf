@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 process sayHello {
+  memory { x.length() > 4 ? '1 GB' : '512 MB' }
   input: 
     val x
   output:
