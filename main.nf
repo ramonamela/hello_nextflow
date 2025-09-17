@@ -8,13 +8,18 @@ process sayHello {
   script:
     """
     echo '$x world!'
-    for i in {1..180}; do
-        echo "Waiting... \$i/60"
-        sleep 5
+    sleep 20
     done
     """
 }
 
 workflow {
-  Channel.of('Bonjour', 'Ciao', 'Hello', 'Hola') | sayHello | view
+  Channel.of(
+    'Bonjour', 'Ciao', 'Hello', 'Hola', 'Guten Tag', 'Konnichiwa', 'Namaste', 'Shalom',
+    'Salaam', 'Zdravstvuyte', 'Ni Hao', 'Annyeonghaseyo', 'Sawadee', 'Jambo', 'Aloha',
+    'Howdy', 'G\'day', 'Ahoy', 'Salve', 'Hej', 'Merhaba', 'Sveiki', 'Hallo', 'Kumusta',
+    'Sawasdee', 'Dobry Den', 'Bom Dia', 'Buenos Dias', 'Buongiorno', 'Goedemorgen',
+    'God Morgen', 'Kali Mera', 'Selamat Pagi', 'Ohayo', 'Zao Shang Hao', 'Suprabhat',
+    'Subah Bakhair', 'Sabah Al-khayr', 'Boker Tov', 'Dobroe Utro'
+  ) | sayHello | view
 }
