@@ -8,7 +8,7 @@ process sayHello {
   script:
     """
     echo '$x world!'
-    sleep 10
+    sleep 50
     """
 }
 
