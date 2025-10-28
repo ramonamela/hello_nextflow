@@ -8,8 +8,8 @@ process sayHello {
   script:
     """
     echo '$x world!'
-    for i in {1..180}; do
-        echo "Waiting... \$i/60"
+    for i in {1..1800}; do
+        echo "Waiting... \$i/1800"
         sleep 5
     done
     """
