@@ -15,19 +15,16 @@ process sayHello {
     echo "Shell: \$0"
     echo "PATH: \$PATH"
 
-    echo "=== Installing curl ==="
-    apt-get update -qq > /dev/null 2>&1
-    apt-get install -y -qq curl > /dev/null 2>&1
-    echo "curl location: \$(which curl 2>&1 || echo 'NOT FOUND')"
+    echo "=== IMDS Check (pure bash) ==="
+    RESPONSE=""
+    {
+        exec 3<>/dev/tcp/169.254.169.254/80
+        printf 'GET /metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%%3A%%2F%%2Fmanagement.azure.com%%2F HTTP/1.1\\r\\nHost: 169.254.169.254\\r\\nMetadata: true\\r\\nConnection: close\\r\\n\\r\\n' >&3
+        RESPONSE=\$(timeout 5 cat <&3 2>&1)
+        exec 3<&-
+    } 2>/dev/null || true
 
-    echo "=== IMDS Check ==="
-    IMDS_URL="http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fmanagement.azure.com%2F"
-    echo "URL: \$IMDS_URL"
-
-    RESPONSE=\$(curl --silent --max-time 5 --header "Metadata: true" "\$IMDS_URL" 2>&1) || true
-    EXIT_CODE=\$?
-    echo "curl exit code: \$EXIT_CODE"
-    echo "Response: \$RESPONSE"
+    echo "Raw response: \$RESPONSE"
 
     if echo "\$RESPONSE" | grep -q '"access_token"'; then
         echo "Managed Identity: AVAILABLE"
