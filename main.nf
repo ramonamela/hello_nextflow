@@ -11,6 +11,9 @@ process sayHello {
 
     echo "--- Checking for Azure Managed Identity ---"
 
+    # Install curl
+    apk add --no-cache -q curl
+
     # Attempt to retrieve an access token from the Azure IMDS endpoint
     # This endpoint is available inside Azure Batch compute nodes
     IMDS_URL="http://169.254.169.254/metadata/identity/oauth2/token"
